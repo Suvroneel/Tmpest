@@ -1,6 +1,9 @@
-# Tmpest
+<img width="1224" height="1632" alt="image" src="https://github.com/user-attachments/assets/c33b66bd-9395-4bda-8154-d1f2fcfff390" /># Tmpest
 
 ### Find peace when you require it most.
+
+recommendation system + location awareness
+
 
 Tmpest is a concept focused on helping people discover essential temporary spaces nearby — from accessible bathrooms to affordable short-term shelter.
 
