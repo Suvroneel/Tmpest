@@ -4,6 +4,7 @@ from Utils.title import render_main_title, render_full_header, render_tagline
 
 st.set_page_config(
     page_title="Tmpest",
+    layout="wide"
 
 )
 
