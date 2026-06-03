@@ -1,4 +1,4 @@
-<img width="1224" height="1632" alt="image" src="https://github.com/user-attachments/assets/c33b66bd-9395-4bda-8154-d1f2fcfff390" /># Tmpest
+# Tmpest
 
 ### Find peace when you require it most.
 
