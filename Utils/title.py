@@ -20,23 +20,18 @@ def render_tagline():
     """, unsafe_allow_html=True)
 
     st.markdown("""
-        <h3 style='font-family:"Poppins"; font-size: 28px; font-weight: 400; margin-top:-15px;'>
-            Shelters and Toilets
+        <h3 style='font-family:"Poppins"; font-size: 28px;color:#84B63A; font-weight: 400; margin-top:-15px;'>
+            Find peace when you require it most
         </h3>
     """, unsafe_allow_html=True)
 
 
-def new_tagline():
-    st.markdown("""
-        <div style='font-size:14px; color:#777; text-align:center; margin-top: -10px;'>
-            A gentle space to understand how you feel and support your emotional well-being.
+def new_tagline(tagline_text):
+    st.markdown(f"""
+        <div style='font-size:30px;font-weight: 400; text-align:left; margin-top: -10px;'>
+          {tagline_text}
         </div>
         """, unsafe_allow_html=True)
-
-
-def render_full_header():
-    render_main_title()
-    render_tagline()
 
 
 def render_welcome_message(username="User"):
@@ -83,7 +78,7 @@ def render_custom_header(header_text):
         <style>
             .streamlit-like-header {
                 font-family: 'Inter', sans-serif;
-                font-size: 30px;  /* Larger for stronger presence */
+                font-size: 50px;  /* Larger for stronger presence */
                 font-weight: 500;
                 color: var(--text-color);
                 margin-bottom: -8px;  /* Pull divider closer */
@@ -94,48 +89,23 @@ def render_custom_header(header_text):
 
     st.markdown(f'<div class="streamlit-like-header">{header_text}</div>', unsafe_allow_html=True)
 
-    # Default Streamlit divider
-    st.divider()
 
-
-def render_custom_header2(header_text):
-    st.markdown("""
-        <style>
-            .ashva-divider {
-                font-family: 'Inter', sans-serif;
-                font-size: 30px;
-                font-weight: 500;
-                color: var(--text-color);
-                margin-bottom: -8px;
-                margin-top: 0px;
-                padding-top: 0px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
-    st.divider()
-
-
-def render_custom_subheader(header_text):
-    st.markdown("""
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
-        <style>
-            .streamlit-like-subheader {
-                font-family: 'Inter', sans-serif;
-                font-size: 24px;  /* Larger for stronger presence */
-                font-weight: 500;
-                color: var(--text-color);
-
-                margin-top: -30px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f'<div class="streamlit-like-subheader">{header_text}</div>', unsafe_allow_html=True)
-
-    # Default Streamlit divider
-
-# testing
-
+def section_divider(
+    color="#b8f24a",
+    height=12,
+    margin_top=60,
+    margin_bottom=60
+):
+    st.markdown(
+        f"""
+        <div style="
+            height:{height}px;
+            background:{color};
+            border-radius:999px;
+            margin:{margin_top}px 0 {margin_bottom}px 0;
+        "></div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
