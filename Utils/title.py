@@ -33,6 +33,22 @@ def new_tagline(tagline_text):
         </div>
         """, unsafe_allow_html=True)
 
+def new_tagline_right(tagline_text):
+    st.markdown(f"""
+        <div style='font-size:30px;font-weight: 400; text-align:right; margin-top: -10px;'>
+          {tagline_text}
+        </div>
+        """, unsafe_allow_html=True)
+
+def new_tagline_center(tagline_text):
+    st.markdown(f"""
+        <div style='font-size:30px;font-weight: 400; text-align:center; margin-top: -10px;'>
+          {tagline_text}
+        </div>
+        """, unsafe_allow_html=True)
+
+
+
 
 def render_welcome_message(username="User"):
     st.markdown(
