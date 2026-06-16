@@ -1,57 +1,67 @@
 # Tmpest
 
-### Find peace when you require it most.
+### Find peace when you need it most.
+
+A real-time survival assistance layer for essential human needs.
 
 ---
 
 ## Overview
 
-Tmpest is a location-aware assistance system designed to help people discover essential temporary spaces nearby — from accessible washrooms to affordable short-term shelter.
+Tmpest is a location-aware assistance system that helps people find essential nearby spaces in moments of need — from accessible washrooms to affordable short-term shelter and immediate food access.
 
-It is built around a simple observation:
+It is built on a simple truth:
 
-Sometimes people do not need luxury.  
-They just need relief, safety, comfort, or a place to stay for a while.
+Sometimes people don’t need options.  
+They just need relief, safety, or a place to pause.
 
-Tmpest connects people who need immediate access to basic facilities with those who can provide underutilized spaces.
+Tmpest connects people seeking immediate help with others who have available space or resources nearby.
 
 ---
 
 ## Core Idea
 
-Life often creates sudden moments of discomfort or uncertainty — being stuck in a new city, unable to find a washroom, or searching for an affordable place to stay.
+People often get stuck in everyday situations — in a new city, during travel, or in crowded urban environments — without knowing where to find basic support.
 
-Tmpest reduces that friction by making essential resources discoverable through location-aware and context-based recommendations.
+Tmpest reduces that gap by making essential resources visible, nearby, and quickly accessible.
+
+It focuses on real-time human needs, not exploration or browsing.
 
 ---
 
 ## Problem Statement
 
-Tmpest addresses two fundamental real-world gaps:
+Tmpest addresses three real-world gaps:
 
-### 1. Immediate Access Problem
-
-People in unfamiliar or crowded environments often struggle to find:
-- Washrooms
-- Safe and accessible public facilities
-- Basic comfort points in urgent situations
+### 1. Immediate Access Gap
+In unfamiliar or crowded places, people struggle to quickly find:
+- Washrooms  
+- Safe public facilities  
+- Basic comfort points in urgent moments  
 
 ### 2. Affordable Shelter Gap
-
 In many cities:
-- Rent is expensive in central areas
-- Budget-friendly options exist but are hard to discover
-- Homeowners with spare rooms lack visibility to potential tenants
+- Central rents are high  
+- Budget stays exist but are hard to discover  
+- Spare rooms remain unused due to low visibility  
+
+### 3. Immediate Food Access Gap
+In urgent situations, people struggle to find:
+- Affordable meals  
+- Open-now food options  
+- Nearby basic food sources  
+- Small local or home-based food providers  
 
 ---
 
 ## Solution
 
-Tmpest bridges the gap between need and availability:
+Tmpest bridges need and availability directly:
 
-- Users get quick access to essential nearby facilities
-- Homeowners can list unused rooms for short-term or flexible stays
-- Travelers and students can find affordable shelter options
+- Helps users quickly locate essential nearby facilities  
+- Enables discovery of affordable and temporary shelter options  
+- Helps users find immediate food access nearby  
+- Allows people to offer unused rooms or extra food capacity for others  
 
 ---
 
@@ -59,10 +69,10 @@ Tmpest bridges the gap between need and availability:
 
 ### 1. Find Shelter Module
 
-A discovery system for affordable and temporary accommodation options based on:
-- Location proximity
-- Budget flexibility
-- Availability of rooms
+A discovery system for affordable and temporary accommodation based on:
+- Location proximity  
+- Budget flexibility  
+- Availability of rooms  
 
 ![Shelter Page UI Placeholder](shelter-ui-placeholder.png)
 
@@ -76,85 +86,134 @@ A fast-access system that helps users locate nearby washrooms during urgent situ
 
 ---
 
-### 3. Recommendation System
+### 3. Find Foodings Module
 
-Tmpest includes a contextual recommendation engine designed to:
-- Suggest the most relevant nearby options
-- Reduce search time in urgent situations
-- Prioritize accessibility and convenience
-- Adapt results based on user context and intent
+A real-time discovery system for immediate food access in nearby locations.
+
+It helps users find:
+- Affordable meals  
+- Home-cooked or small local food providers  
+- Open-now food sources  
+- Nearby options suitable for urgent or low-cost needs  
+
+Foodings focuses on real-time availability and basic accessibility rather than curated dining experiences.
+
+![Foodings Page UI Placeholder](foodings-ui-placeholder.png)
 
 ---
 
-### 4. Context-Aware Discovery
+### 4. Relief Engine (Need-Based Matching Layer)
 
-The system considers:
-- Location
-- Urgency of need
-- Type of requirement (shelter vs washroom)
-- Distance vs accessibility trade-offs
+The Relief Engine is the core intelligence layer of Tmpest.
+
+It prioritizes what matters most in the moment:
+- Nearest useful option  
+- Fastest path to resolution  
+- Context (urgency + intent + location)  
+- Accessibility over variety  
+
+It ensures users are not browsing — they are resolving needs.
+
+---
+
+### 5. Context-Aware Discovery
+
+Results are shaped by:
+- Location  
+- Urgency  
+- Type of need (shelter / washroom / foodings)  
+- Distance vs accessibility trade-off  
+
+---
+
+## Core Flow
+
+User enters a situation of need →  
+Relief Engine detects intent + location →  
+System surfaces nearest relevant option →  
+User connects directly to solution →  
+Need is resolved in minimal steps
 
 ---
 
 ## Vision
 
-Tmpest is built around a simple principle:
+Tmpest exists for one purpose:
 
-Technology does not always need to solve futuristic problems.  
-Sometimes its purpose is to solve immediate human discomfort.
+To reduce friction between human need and immediate relief.
+
+Not through complexity — but through proximity, simplicity, and availability.
 
 It connects:
-- People to essential facilities
-- Homeowners to unused space opportunities
-- Urgency to relief
+- People to basic facilities  
+- Spare resources to real demand  
+- Urgency to relief  
+
+---
+
+## Non-Goals
+
+Tmpest is not:
+- a booking platform  
+- a delivery service  
+- a marketplace for promotions or discounts  
+- a commercial recommendation engine  
+
+It does not optimize for engagement, ads, or conversions.
+
+It exists purely for immediate human need resolution.
 
 ---
 
 ## System Design
 
-Tmpest operates as a dual-flow discovery system:
+Tmpest works as a real-time discovery layer:
 
-- Real-time location awareness
-- Intent-based recommendation ranking
-- Two primary user flows:
-  - Emergency utility flow (washroom access)
-  - Shelter discovery flow (temporary accommodation)
+- Location-aware matching  
+- Intent-based ranking  
+- Three core flows:
+  - Emergency utility flow (washroom access)  
+  - Shelter discovery flow (temporary stay)  
+  - Foodings access flow (immediate food needs)  
+
+Powered by the Relief Engine.
 
 ---
 
 ## Target Users
 
-- Travelers in unfamiliar cities
-- Students seeking affordable accommodation
-- Daily commuters in urban areas
-- Homeowners with unused rooms
-- Individuals needing quick access to basic facilities
+- Travelers in unfamiliar places  
+- Students in new cities  
+- Daily commuters  
+- People offering spare rooms or food capacity  
+- Anyone needing quick access to basic facilities  
 
 ---
 
-## Current Status
+## Current Stage
 
-Tmpest is currently in early-stage design and architecture phase.
+Early-stage design and system architecture.
 
-Active areas of exploration:
-- Contextual recommendation systems
-- Location-based ranking logic
-- User intent classification
-- Discovery pipeline design
+Focus areas:
+- Location-based discovery logic  
+- Intent understanding  
+- Matching between need and availability  
+- Lightweight real-time recommendation flow  
 
 ---
 
 ## Future Direction
 
-Future iterations may include:
-- AI-based personalization
-- Smarter intent prediction
-- Improved matching between hosts and seekers
-- Expanded categories of essential facilities
+Possible expansions:
+- Smarter intent prediction  
+- Better matching between users and providers  
+- AI-assisted prioritization of results  
+- Additional essential categories (transport, safety, etc.)  
 
 ---
 
 ## Philosophy
 
-The goal is not to over-engineer access to basic needs.  
-The goal is to make comfort, safety, and relief easier to reach — exactly when they are needed most.
+Tmpest does not try to over-engineer basic needs.
+
+It exists to make relief, safety, shelter, and food easier to reach — when they are needed most.
