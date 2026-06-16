@@ -4,7 +4,7 @@ from Utils.Searchbox import *
 from Utils.title import *
 from streamlit_dynamic_filters import DynamicFilters
 # Hero Text
-render_custom_header("Shelters & Rents")
+render_custom_header("Shelters")
 section_divider()
 
 

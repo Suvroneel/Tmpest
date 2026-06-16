@@ -50,7 +50,7 @@ def new_tagline_center(tagline_text):
 
 
 
-def render_welcome_message(username="User"):
+def render_message(username):
     st.markdown(
         f"""
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
@@ -64,7 +64,7 @@ def render_welcome_message(username="User"):
             text-align: center; /* Added to center the text */
         }}
         </style>
-        <div class="custom-welcome">Welcome, {username}</div>
+        <div class="custom-welcome">{username}</div>
 
         """,
         unsafe_allow_html=True
