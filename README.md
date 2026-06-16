@@ -2,218 +2,176 @@
 
 ### Find peace when you need it most.
 
-A real-time survival assistance layer for essential human needs.
+A real-time survival assistance platform that understands what you need and gets you there — built with a natural language search layer powered by Hugging Face NLP models.
+
+---
+
+## Live Demo
+
+📌 https://tmpest.streamlit.app/
+
+![Tmpest Landing Page](front-page-placeholder.png)
 
 ---
 
 ## Overview
 
-Tmpest is a location-aware assistance system that helps people find essential nearby spaces in moments of need — from accessible washrooms to affordable short-term shelter and immediate food access.
+Tmpest helps people locate essential nearby resources — shelter, food, and washrooms — in moments of real need. Unlike traditional discovery platforms built around filters and curated listings, Tmpest is built around a single idea: people in urgent situations don't want to browse, they want to be understood and routed directly to relief.
 
-It is built on a simple truth:
+The platform is built on a simple truth:
 
-Sometimes people don’t need options.  
-They just need relief, safety, or a place to pause.
-
-Tmpest connects people seeking immediate help with others who have available space or resources nearby.
+Sometimes people don't need options. They need relief, safety, or a place to pause — and they need to be understood in one sentence, not five filters.
 
 ---
 
-## Core Idea
+## The Problem
 
-People often get stuck in everyday situations — in a new city, during travel, or in crowded urban environments — without knowing where to find basic support.
+Tmpest addresses three real gaps in how people access basic resources in unfamiliar or urgent situations:
 
-Tmpest reduces that gap by making essential resources visible, nearby, and quickly accessible.
+**Immediate Access Gap**
+In unfamiliar or crowded places, people struggle to quickly locate washrooms, safe public facilities, and basic comfort points during urgent moments.
 
-It focuses on real-time human needs, not exploration or browsing.
+**Affordable Shelter Gap**
+Central accommodation is expensive and hard to find on short notice, while spare rooms and unused space within communities remain invisible to the people who need them.
 
----
-
-## Problem Statement
-
-Tmpest addresses three real-world gaps:
-
-### 1. Immediate Access Gap
-In unfamiliar or crowded places, people struggle to quickly find:
-- Washrooms  
-- Safe public facilities  
-- Basic comfort points in urgent moments  
-
-### 2. Affordable Shelter Gap
-In many cities:
-- Central rents are high  
-- Budget stays exist but are hard to discover  
-- Spare rooms remain unused due to low visibility  
-
-### 3. Immediate Food Access Gap
-In urgent situations, people struggle to find:
-- Affordable meals  
-- Open-now food options  
-- Nearby basic food sources  
-- Small local or home-based food providers  
+**Immediate Food Access Gap**
+People in urgent situations struggle to find affordable meals, open-now food options, and small local or home-based food providers nearby.
 
 ---
 
-## Solution
+## How AI Fits In
 
-Tmpest bridges need and availability directly:
+Tmpest is intentionally not built as a recommendation engine that ranks and curates dozens of options. That model fits booking platforms and marketplaces — it does not fit a survival assistance tool, where the priority is speed and clarity over choice.
 
-- Helps users quickly locate essential nearby facilities  
-- Enables discovery of affordable and temporary shelter options  
-- Helps users find immediate food access nearby  
-- Allows people to offer unused rooms or extra food capacity for others  
+Instead, the AI layer in Tmpest exists for one purpose: understanding a messy, natural language description of a situation and routing the user directly to the right place, with relevant context already carried over.
+
+**Example:**
+
+> "Need a cheap place to stay near Park Street tonight"
+
+Rather than asking the user to manually select a category, set filters, and search, Tmpest's intent layer extracts what matters from that single sentence and takes the user straight to the Shelters page — with the location already understood and carried into the next screen.
+
+### Intent Extraction Pipeline
+
+The natural language search box on the landing page is powered by two Hugging Face models, chosen specifically to avoid the cost and complexity of training or running a custom model:
+
+**Category Detection — `facebook/bart-large-mnli`**
+A zero-shot classification model determines whether the user's query relates to shelter, food, or washrooms, without requiring any labeled training data specific to this use case.
+
+**Location Extraction — `dslim/bert-base-NER`**
+A named entity recognition model identifies location references within the query, which are then carried forward to pre-fill the search context on the destination page.
+
+**Budget Extraction**
+A lightweight rule-based extractor identifies numeric budget constraints mentioned in the query.
+
+### Routing Flow
+
+```
+User types a natural language query
+              |
+              v
+   Category detected (shelter / food / washroom)
+              |
+              v
+   Location and budget extracted, if present
+              |
+              v
+   Low-confidence or unclear queries are caught
+   and the user is asked to rephrase
+              |
+              v
+   User is routed to the matching page
+              |
+              v
+   Destination page reads the extracted context
+   and pre-fills the search bar accordingly
+```
+
+Manual browsing remains fully intact alongside this flow. Each resource category also has its own dedicated page with a standalone search bar, so a user can choose to browse directly without going through the natural language box at all.
 
 ---
 
 ## Core Features
 
-### 1. Find Shelter Module
+### Shelters
 
-A discovery system for affordable and temporary accommodation based on:
-- Location proximity  
-- Budget flexibility  
-- Availability of rooms  
+A discovery system for affordable, short-term accommodation, built around listings shared directly by community members rather than commercial inventory.
 
-![Shelter Page UI Placeholder](shelter-ui-placeholder.png)
+![Shelters Page](shelters-ui-placeholder.png)
 
----
+### Washrooms
 
-### 2. Find Washroom Module
+A fast, map-based system that helps users locate nearby washrooms during urgent moments, without requiring any backend listing data.
 
-A fast-access system that helps users locate nearby washrooms during urgent situations.
+![Washrooms Page](washrooms-ui-placeholder.png)
 
-![Washroom Page UI Placeholder](washroom-ui-placeholder.png)
+### Food
 
----
+A discovery system for nearby food access, built around the same shared-listing model as Shelters — affordable meals, home-cooked options, and small local providers.
 
-### 3. Find Foodings Module
-
-A real-time discovery system for immediate food access in nearby locations.
-
-It helps users find:
-- Affordable meals  
-- Home-cooked or small local food providers  
-- Open-now food sources  
-- Nearby options suitable for urgent or low-cost needs  
-
-Foodings focuses on real-time availability and basic accessibility rather than curated dining experiences.
-
-![Foodings Page UI Placeholder](foodings-ui-placeholder.png)
+![Food Page](food-ui-placeholder.png)
 
 ---
 
-### 4. Relief Engine (Need-Based Matching Layer)
+## Share, Not Rent
 
-The Relief Engine is the core intelligence layer of Tmpest.
+Tmpest is not a booking platform, a delivery service, or a marketplace. The language used throughout the product is intentionally built around sharing rather than transacting.
 
-It prioritizes what matters most in the moment:
-- Nearest useful option  
-- Fastest path to resolution  
-- Context (urgency + intent + location)  
-- Accessibility over variety  
-
-It ensures users are not browsing — they are resolving needs.
+People with a spare room or extra food capacity can share it with someone nearby who needs it, rather than listing it for rent in the conventional sense. This distinction matters: Tmpest is not trying to replicate the commercial logic of accommodation or food delivery platforms. It exists to connect real, immediate need with real, immediate availability — between people, not through a marketplace.
 
 ---
 
-### 5. Context-Aware Discovery
+## System Architecture
 
-Results are shaped by:
-- Location  
-- Urgency  
-- Type of need (shelter / washroom / foodings)  
-- Distance vs accessibility trade-off  
-
----
-
-## Core Flow
-
-User enters a situation of need →  
-Relief Engine detects intent + location →  
-System surfaces nearest relevant option →  
-User connects directly to solution →  
-Need is resolved in minimal steps
-
----
-
-## Vision
-
-Tmpest exists for one purpose:
-
-To reduce friction between human need and immediate relief.
-
-Not through complexity — but through proximity, simplicity, and availability.
-
-It connects:
-- People to basic facilities  
-- Spare resources to real demand  
-- Urgency to relief  
+```
+Tmpest/
+├── Tmpest.py                    Landing page with natural language search
+├── pages/
+│   ├── 1_Shelters.py            Shelter listings and manual search
+│   ├── 2_Washrooms.py           Map-based washroom discovery
+│   └── 3_Food.py                Food listings and manual search
+├── Utils/
+│   ├── ai.py                    Intent extraction layer (Hugging Face models)
+│   ├── Searchbox.py             Shared styled search component
+│   ├── button.py                Shared styled button component
+│   ├── title.py                 Shared title, header, and divider components
+│   └── section.py                Section layout helpers
+├── images/                      Static assets
+└── requirements.txt
+```
 
 ---
 
-## Non-Goals
+## Technology
 
-Tmpest is not:
-- a booking platform  
-- a delivery service  
-- a marketplace for promotions or discounts  
-- a commercial recommendation engine  
+**Frontend**
+Streamlit, with custom CSS for styling and layout.
 
-It does not optimize for engagement, ads, or conversions.
+**AI / NLP**
+Hugging Face Transformers — zero-shot classification for intent detection, named entity recognition for location extraction.
 
-It exists purely for immediate human need resolution.
+**Backend**
+Supabase (PostgreSQL) for storing shared listings across Shelters and Food.
 
----
-
-## System Design
-
-Tmpest works as a real-time discovery layer:
-
-- Location-aware matching  
-- Intent-based ranking  
-- Three core flows:
-  - Emergency utility flow (washroom access)  
-  - Shelter discovery flow (temporary stay)  
-  - Foodings access flow (immediate food needs)  
-
-Powered by the Relief Engine.
+**Mapping**
+Folium, for washroom discovery.
 
 ---
 
-## Target Users
+## Design Philosophy
 
-- Travelers in unfamiliar places  
-- Students in new cities  
-- Daily commuters  
-- People offering spare rooms or food capacity  
-- Anyone needing quick access to basic facilities  
+Tmpest is built around a single principle: people in urgent situations should not have to translate their problem into a system's language. The system should understand the problem as stated and respond accordingly.
+
+This shapes every architectural decision in the project — the single search box instead of multi-step filters, the routing-based flow instead of a results dashboard, and the shared-listing model instead of a commercial marketplace structure.
 
 ---
 
 ## Current Stage
 
-Early-stage design and system architecture.
-
-Focus areas:
-- Location-based discovery logic  
-- Intent understanding  
-- Matching between need and availability  
-- Lightweight real-time recommendation flow  
+Core natural language routing flow is implemented and functional. Backend integration for shared listings is in progress.
 
 ---
 
-## Future Direction
+## License
 
-Possible expansions:
-- Smarter intent prediction  
-- Better matching between users and providers  
-- AI-assisted prioritization of results  
-- Additional essential categories (transport, safety, etc.)  
-
----
-
-## Philosophy
-
-Tmpest does not try to over-engineer basic needs.
-
-It exists to make relief, safety, shelter, and food easier to reach — when they are needed most.
+This project is open source and available under the MIT License.
