@@ -1,5 +1,4 @@
 import streamlit as st
-
 def styled_button(label, icon=None, key=None):
 
     st.markdown("""
@@ -55,3 +54,5 @@ def styled_button(label, icon=None, key=None):
         key=key,
         use_container_width=False
     )
+
+

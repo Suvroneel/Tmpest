@@ -1,7 +1,6 @@
 import streamlit as st
 from Utils.button import styled_button
-from Utils.title import *
-
+from Utils.title import render_main_title, render_tagline, new_tagline, section_divider, render_custom_header
 from Utils.section import section_start, section_end
 from Utils.ai import extract_intent  # 🆕 AI utility
 
@@ -19,7 +18,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Header (smaller than before) ──────────────────────────────────────────────
-col1, col2 = st.columns([1, 5])
+col1, col2 = st.columns([1, 4])
 with col1:
     st.image('images/logo.jpg', use_container_width=True, width=70)   # slightly smaller
 with col2:
@@ -30,10 +29,8 @@ with col2:
             Find peace when you require it most
         </h3>
     """, unsafe_allow_html=True)
-st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
 
-new_tagline_center("Find nearby shelter, foodings, and washrooms when you need them most.")
-st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
 # ── Smart Search Box ───────────────────────────────────────────────────────────
 st.markdown("""
@@ -67,28 +64,40 @@ left, mid, right = st.columns([1, 6, 1])
 with mid:
     query = st.text_input(
         "",
-        placeholder="Tell us what you need",
+        placeholder="Tell us what you need ",
         label_visibility="collapsed",
         key="main_search"
     )
 
 # ── Handle Search ──────────────────────────────────────────────────────────────
-if query:
+# Case 1: empty submit — nothing typed yet, do nothing
+if query is not None and query.strip() == "":
+    pass
+
+elif query:
     with st.spinner("Finding the best option for you..."):
         intent = extract_intent(query)
+
+    category = intent.get("category", "").lower()
+    score = intent.get("score", 0)  # confidence from zero-shot classifier, if returned
+
+    # Case 2: gibberish / low-confidence — don't route, just nudge the user
+    if category not in ["shelter", "washroom", "food"] or (score and score < 0.4):
+        st.warning("Hmm, couldn't quite figure out what you need. Try mentioning shelter, food, or washroom directly!")
+        st.session_state.pop("extracted_intent", None)
+        st.session_state.pop("search_query", None)
+
+    # Case 3: confident match — store and route
+    else:
         st.session_state["search_query"] = query
         st.session_state["extracted_intent"] = intent
 
-    category = intent.get("category", "").lower()
-
-    if category == "shelter":
-        st.switch_page("pages/1_Shelters.py")
-    elif category == "washroom":
-        st.switch_page("pages/2_Washrooms.py")
-    elif category == "food":
-        st.switch_page("pages/3_Food.py")
-    else:
-        st.warning("Couldn't figure out what you need. Try being more specific!")
+        if category == "shelter":
+            st.switch_page("pages/1_Shelters.py")
+        elif category == "washroom":
+            st.switch_page("pages/2_Washrooms.py")
+        elif category == "food":
+            st.switch_page("pages/3_Food.py")
 
 st.markdown("<div style='margin-top: 80px;'></div>", unsafe_allow_html=True)
 section_divider()
@@ -112,7 +121,13 @@ with col1:
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     new_tagline("•‎ ‎ ‎ ‎ ‎ ‎ ‎ User Reviews")
     st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
-    journey = styled_button("Explore", key="shelter", icon=":material/open_in_new:")
+
+    m , n = st.columns([1, 2])
+    with m:
+        journey = styled_button("Explore",key="shelter", icon=":material/open_in_new:")
+    with n:
+        share_shelter =styled_button("Share",key="share_shelter", icon=":material/favorite:")
+
 
 if journey:
     st.switch_page("pages/1_Shelters.py")
@@ -166,7 +181,12 @@ with col1:
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     new_tagline("•‎ ‎ ‎ ‎ ‎ ‎ ‎ User Reviews")
     st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
-    food_btn = styled_button("Explore", key="food", icon=":material/open_in_new:")
+
+    m , n = st.columns([1, 2])
+    with m:
+        food_btn = styled_button("Explore", key="food", icon=":material/open_in_new:")
+    with n:
+        share_food =styled_button("Share",key="share_food", icon=":material/favorite:")
 
 if food_btn:
     st.switch_page("pages/3_Food.py")

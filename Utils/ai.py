@@ -12,7 +12,13 @@ Uses two HuggingFace models (jugad style, no training, no API cost):
 import streamlit as st
 from transformers import pipeline
 
-CATEGORIES = ["shelter", "food", "washroom"]
+CATEGORY_LABELS = {
+    "shelter": "a place to stay, sleep, rent a room, or take shelter",
+    "food": "food, meals, or a place to eat",
+    "washroom": "a washroom, toilet, or restroom"
+}
+CATEGORIES = list(CATEGORY_LABELS.values())
+LABEL_TO_CATEGORY = {v: k for k, v in CATEGORY_LABELS.items()}
 
 
 # ── Cache both models so they load once per session, not on every search ─────
@@ -23,14 +29,15 @@ def load_classifier():
 
 @st.cache_resource
 def load_ner():
-    return pipeline("ner", model="dslim/bert-base-NER", grouped_entities=True)
+    return pipeline("ner", model="dslim/bert-base-NER", aggregation_strategy="simple")
 
 
-def detect_category(query: str) -> str:
-    """Returns one of: shelter / food / washroom"""
+def detect_category(query: str) -> tuple[str, float]:
+    """Returns (label, confidence_score) — highest scoring category."""
     classifier = load_classifier()
     result = classifier(query, candidate_labels=CATEGORIES)
-    return result["labels"][0]  # highest scoring label
+    top_label = result["labels"][0]
+    return LABEL_TO_CATEGORY[top_label], result["scores"][0]
 
 
 def extract_location(query: str) -> str | None:
@@ -54,12 +61,13 @@ def extract_intent(query: str) -> dict:
     Main function called from Tmpest.py
     Takes a raw natural language query and returns structured intent.
     """
-    category = detect_category(query)
+    category, score = detect_category(query)
     location = extract_location(query)
     budget = extract_budget(query)
 
     return {
         "category": category,
+        "score": score,
         "location": location,
         "budget": budget,
         "raw_query": query

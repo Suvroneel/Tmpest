@@ -4,7 +4,8 @@ import streamlit as st
 def styled_search_bar(
     placeholder="Search...",
     key=None,
-    width_ratio=[2,5,2]
+    width_ratio=[2,5,2],
+    value=""
 ):
 
     st.markdown("""
@@ -116,6 +117,8 @@ def styled_search_bar(
         query = st.text_input(
 
             "",
+
+            value=value,
 
             placeholder=placeholder,
 
