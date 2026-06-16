@@ -1,13 +1,14 @@
 import streamlit as st
 from Utils.button import styled_button
-from Utils.title import render_main_title, render_tagline, new_tagline, section_divider, render_custom_header, \
-    render_message
+from Utils.title import *
+
 from Utils.section import section_start, section_end
 from Utils.ai import extract_intent  # 🆕 AI utility
 
 st.set_page_config(
     page_title="Tmpest",
-    layout="wide"
+    layout="wide",
+    page_icon="images/icon/favicon.ico"
 )
 
 st.markdown("""
@@ -31,7 +32,7 @@ with col2:
     """, unsafe_allow_html=True)
 st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
 
-render_message("Find nearby shelter, foodings, and washrooms when you need them most.")
+new_tagline_center("Find nearby shelter, foodings, and washrooms when you need them most.")
 st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
 
 # ── Smart Search Box ───────────────────────────────────────────────────────────
