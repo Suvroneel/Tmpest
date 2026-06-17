@@ -130,6 +130,7 @@ Tmpest/
 │   ├── 1_Shelters.py            Shelter listings and manual search
 │   ├── 2_Washrooms.py           Map-based washroom discovery
 │   └── 3_Food.py                Food listings and manual search
+
 ├── Utils/
 │   ├── ai.py                    Intent extraction layer (Hugging Face models)
 │   ├── Searchbox.py             Shared styled search component
