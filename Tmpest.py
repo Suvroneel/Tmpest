@@ -1,6 +1,6 @@
 import streamlit as st
 from Utils.button import styled_button
-from Utils.title import render_main_title, render_tagline, new_tagline, section_divider, render_custom_header
+from Utils.title import *
 from Utils.section import section_start, section_end
 from Utils.ai import extract_intent  # 🆕 AI utility
 
@@ -59,6 +59,9 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+render_welcome_message()
+st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
 left, mid, right = st.columns([1, 6, 1])
 with mid:
@@ -132,6 +135,9 @@ with col1:
 if journey:
     st.switch_page("pages/1_Shelters.py")
 
+if share_shelter:
+    st.switch_page("pages/4_Seller_Section.py")
+
 with col2:
     st.image('images/shelter.jpg', use_container_width=True, width=40)
 
@@ -152,12 +158,15 @@ with colY:
     st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
     new_tagline("Locate clean, safe, and accessible washrooms near you — instantly, without the stress of searching.")
     st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
-    y, z = st.columns([4, 2])
-    with z:
+    x,y, z = st.columns([3,3, 2])
+    with y:
         move = styled_button("Explore", icon=":material/open_in_new:", key="toilet_button")
+    with z:
+        share_toilet= styled_button("Share",key="share_toilet", icon=":material/favorite:")
         if move:
             st.switch_page("pages/2_Washrooms.py")
-
+    if share_toilet :
+        st.switch_page("pages/4_Seller_Section.py")
 with colX:
     st.image('images/toilet.jpg', use_container_width=True, width=30)
 
@@ -191,6 +200,9 @@ with col1:
 if food_btn:
     st.switch_page("pages/3_Food.py")
 
+if share_food:
+    st.switch_page("pages/4_Seller_Section.py")
+
 with col2:
     st.image('images/food.jpg', use_container_width=True, width=40)
 
@@ -204,4 +216,3 @@ with C:
     st.image('images/img_1.jpg', width=200)
 with D:
     render_custom_header("So what do you get ?")
-    new_tagline("You show up. Tmpest quietly finds what you need nearby.")

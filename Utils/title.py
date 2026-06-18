@@ -125,3 +125,22 @@ def section_divider(
     )
 
 
+def render_welcome_message(username="User"):
+    st.markdown(
+        f"""
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+        <style>
+        .custom-welcome {{
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-size: 25px;
+            font-weight: 400;
+            color: ;
+            margin-bottom: 1rem;
+            text-align: center; /* Added to center the text */
+        }}
+        </style>
+        <div class="custom-welcome">Welcome, {username}</div>
+
+        """,
+        unsafe_allow_html=True
+    )
