@@ -2,7 +2,7 @@ import streamlit as st
 from Utils.auth import signup_seller, login_seller
 from Utils.button import *
 from Utils.title import *
-
+from Utils.seller_profile import *
 
 col1, col2 = st.columns([1, 10])
 with col1:
@@ -14,8 +14,10 @@ section_divider()
 
 # ── Logged-in view ─────────────────────────────────────────────────────────
 if "seller" in st.session_state:
+
     seller = st.session_state["seller"]
-    st.success(f"Welcome, {seller['name']}")
+    profile(seller)
+    #st.success(f"Welcome, {seller['name']}")
     st.write(seller)
 
     if styled_button("Logout", key="logout_btn"):
