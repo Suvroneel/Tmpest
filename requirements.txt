@@ -1,7 +1,19 @@
+# Web framework
 streamlit>=1.28.0
+
+# AI / NLP — for intent extraction (bart-large-mnli + bert-base-NER)
 transformers>=4.30.0
 torch>=2.0.0
-streamlit-folium
-folium
-streamlit-dynamic-filters
-supabase
+
+# Map rendering
+folium>=0.14.0
+streamlit-folium>=0.15.0
+
+# Dynamic filters UI component
+streamlit-dynamic-filters>=0.1.7
+
+# Database
+supabase>=2.0.0
+
+# Standard library (no install needed, but good to note)
+# uuid, io, re — built-in
