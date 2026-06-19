@@ -30,7 +30,14 @@ with col2:
         </h3>
     """, unsafe_allow_html=True)
 
+    st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
+
+    dash = styled_button("Seller Dashboard",key="dash", icon=":material/dashboard:")
+    if dash:
+        st.switch_page("pages/4_Seller_Section.py")
+
 st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+
 
 # ── Smart Search Box ───────────────────────────────────────────────────────────
 st.markdown("""

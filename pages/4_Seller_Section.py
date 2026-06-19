@@ -3,6 +3,7 @@ from Utils.auth import signup_seller, login_seller
 from Utils.button import *
 from Utils.title import *
 
+
 col1, col2 = st.columns([1, 10])
 with col1:
     st.image('images/logo.jpg', use_container_width=True, width=70)
