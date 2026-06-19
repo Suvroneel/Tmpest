@@ -20,8 +20,26 @@ CATEGORY_LABELS = {
 CATEGORIES = list(CATEGORY_LABELS.values())
 LABEL_TO_CATEGORY = {v: k for k, v in CATEGORY_LABELS.items()}
 
+# Keywords that should directly map to washroom without going through zero-shot
+WASHROOM_KEYWORDS = [
+    "bathroom", "toilet", "restroom", "loo", "lavatory",
+    "washroom", "wc", "w.c", "latrine", "potty"
+]
 
-# ── Cache both models so they load once per session, not on every search ─────
+# Keywords for shelter
+SHELTER_KEYWORDS = [
+    "shelter", "room", "stay", "sleep", "rent", "accommodation",
+    "lodge", "hostel", "hotel", "pg", "guesthouse"
+]
+
+# Keywords for food
+FOOD_KEYWORDS = [
+    "food", "eat", "meal", "restaurant", "hunger", "hungry",
+    "lunch", "dinner", "breakfast", "snack", "tiffin", "dhaba"
+]
+
+
+# ── Cache both models so they load once per session ───────────────────────────
 @st.cache_resource
 def load_classifier():
     return pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
@@ -32,8 +50,29 @@ def load_ner():
     return pipeline("ner", model="dslim/bert-base-NER", aggregation_strategy="simple")
 
 
+def keyword_match(query: str) -> str | None:
+    """Check for direct keyword matches before hitting the model."""
+    q = query.lower()
+    for kw in WASHROOM_KEYWORDS:
+        if kw in q:
+            return "washroom"
+    for kw in SHELTER_KEYWORDS:
+        if kw in q:
+            return "shelter"
+    for kw in FOOD_KEYWORDS:
+        if kw in q:
+            return "food"
+    return None
+
+
 def detect_category(query: str) -> tuple[str, float]:
-    """Returns (label, confidence_score) — highest scoring category."""
+    """Returns (label, confidence_score) — keyword match first, then zero-shot."""
+    # Try keyword match first
+    keyword_result = keyword_match(query)
+    if keyword_result:
+        return keyword_result, 1.0
+
+    # Fall back to zero-shot classifier
     classifier = load_classifier()
     result = classifier(query, candidate_labels=CATEGORIES)
     top_label = result["labels"][0]
