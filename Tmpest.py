@@ -22,7 +22,7 @@ col1, col2 = st.columns([1, 4])
 with col1:
     st.image('images/logo.jpg', use_container_width=True, width=70)   # slightly smaller
 with col2:
-
+    render_main_title()
     render_green_text("Find peace when you require it most")
 
     st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
