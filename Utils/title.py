@@ -1,6 +1,14 @@
 import streamlit as st
 from datetime import datetime
 
+def render_green_text(text: str, size: int = 20):
+    st.markdown(f"""
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        <h3 style='font-family:"Poppins"; font-size:{size}px; color:#84B63A; font-weight:400; margin-top:-10px;'>
+            {text}
+        </h3>
+    """, unsafe_allow_html=True)
+
 
 def render_main_title():
     st.markdown("""
@@ -144,3 +152,21 @@ def render_welcome_message(username="User"):
         """,
         unsafe_allow_html=True
     )
+
+
+def render_section_header(header_text):
+    st.markdown("""
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+        <style>
+            .section-header {
+                font-family: 'Inter', sans-serif;
+                font-size: 38px;
+                font-weight: 500;
+                color: var(--text-color);
+                margin-bottom: -8px;
+                margin-top: 32px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f'<div class="section-header">{header_text}</div>', unsafe_allow_html=True)

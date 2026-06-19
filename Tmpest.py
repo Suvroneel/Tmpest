@@ -22,13 +22,8 @@ col1, col2 = st.columns([1, 4])
 with col1:
     st.image('images/logo.jpg', use_container_width=True, width=70)   # slightly smaller
 with col2:
-    st.markdown("""
-        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-        <h1 style='font-family:"Poppins"; font-weight:400; font-size:60px; margin-bottom:0;'>Tmpest</h1>
-        <h3 style='font-family:"Poppins"; font-size:20px; color:#84B63A; font-weight:400; margin-top:-10px;'>
-            Find peace when you require it most
-        </h3>
-    """, unsafe_allow_html=True)
+
+    render_green_text("Find peace when you require it most")
 
     st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
 
