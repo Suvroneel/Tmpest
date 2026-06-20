@@ -114,18 +114,32 @@ def styled_search_bar(
 
     with middle:
 
-        query = st.text_input(
+        # IMPORTANT: when a `key` is supplied, we deliberately do NOT pass
+        # `value=` into st.text_input. Streamlit ties widgets with a `key`
+        # to st.session_state[key] — if we ALSO pass a competing `value`
+        # argument on every rerun, it can silently override a value that
+        # was pre-seeded into session_state (e.g. by the AI-search routing
+        # flow setting st.session_state["food_search"] = "Kalighat" before
+        # this widget renders). That was causing the search box to reset
+        # to empty and the page to show all listings instead of filtered
+        # ones. Pre-seed session_state[key] BEFORE calling this function
+        # if you want a default value — that's now the only supported way.
+        if key is not None:
+            if value and key not in st.session_state:
+                st.session_state[key] = value
 
-            "",
-
-            value=value,
-
-            placeholder=placeholder,
-
-            key=key,
-
-            label_visibility="collapsed"
-
-        )
+            query = st.text_input(
+                "",
+                placeholder=placeholder,
+                key=key,
+                label_visibility="collapsed"
+            )
+        else:
+            query = st.text_input(
+                "",
+                value=value,
+                placeholder=placeholder,
+                label_visibility="collapsed"
+            )
 
     return query
