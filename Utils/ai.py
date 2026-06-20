@@ -85,7 +85,12 @@ def extract_location(query: str) -> str | None:
     entities = ner(query)
 
     locations = [e["word"] for e in entities if e["entity_group"] == "LOC"]
-    return locations[0] if locations else None
+
+    if not locations:
+        return None
+
+    # Join all location parts in case NER splits them
+    return " ".join(locations)
 
 
 def extract_budget(query: str) -> int | None:
