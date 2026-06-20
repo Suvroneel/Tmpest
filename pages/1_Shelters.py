@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from Utils.Searchbox import styled_search_bar
 from Utils.title import *
-from streamlit_dynamic_filters import DynamicFilters
+from Utils.listings import fetch_listings, render_listing_grid
 
 render_custom_header("Shelters & Rents")
 section_divider()
@@ -28,13 +28,7 @@ search_query = styled_search_bar(
 )
 
 st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 1, 1], gap="large")
 
-with col1:
-    st.container(border=True)
-
-with col2:
-    st.container(border=True)
-
-with col3:
-    st.container(border=True)
+# Fetch and render listings — location filter only applied if user typed something
+listings = fetch_listings(category="shelter", location=search_query.strip() if search_query else None, debug=True)
+render_listing_grid(listings)
