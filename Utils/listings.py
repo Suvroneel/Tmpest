@@ -122,20 +122,20 @@ def render_listing_card(row: dict) -> str:
                     {name}
                 </div>
                 <div style="font-size:14px; font-weight:600; color:#2c2c2c; white-space:nowrap; margin-left:8px;">
-                    ⭐ {rating}
+                    {rating}
                 </div>
             </div>
             <div style="font-size:17px; font-weight:600; color:#84B63A; margin-top:4px;">
                 {price_text}
             </div>
             <div style="font-size:13.5px; color:#6b7280; margin-top:10px;">
-                📍 {location_text}
+                {location_text}
             </div>
             <div style="font-size:13.5px; color:#6b7280; margin-top:4px;">
-                👤 Hosted by {owner}
+                {owner}
             </div>
             <div style="font-size:13.5px; color:#6b7280; margin-top:4px;">
-                📞 {contact}
+                {contact}
             </div>
         </div>
     </div>

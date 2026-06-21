@@ -28,5 +28,5 @@ search_query = styled_search_bar(
 st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
 # Fetch and render listings — location filter only applied if user typed something
-listings = fetch_listings(category="washroom", location=search_query.strip() if search_query else None, debug=True)
+listings = fetch_listings(category="washroom", location=search_query.strip() if search_query else None)
 render_listing_grid(listings)
