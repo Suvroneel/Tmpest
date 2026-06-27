@@ -2,7 +2,7 @@
 
 ### Find peace when you need it most.
 
-A real-time survival assistance platform that understands what you need and gets you there — built with a natural language search layer powered by Hugging Face NLP models.
+A real-time survival assistance platform powered by **Survi** — a conversational AI that understands what you need, where you are, and surfaces the right resources without asking you to search.
 
 ---
 
@@ -10,185 +10,186 @@ A real-time survival assistance platform that understands what you need and gets
 
 📌 https://tmpest.streamlit.app/
 
-![Tmpest Landing Page](front-page-placeholder.png)
-
 ---
 
 ## Overview
 
-Tmpest helps people locate essential nearby resources — shelter, food, washrooms, and seller-provided services — in moments of real need. Unlike traditional discovery platforms built around filters and curated listings, Tmpest is built around a single idea: people in urgent situations don't want to browse, they want to be understood and routed directly to relief.
+Tmpest helps people locate essential nearby resources — shelter, food, and washrooms — in moments of real need.
 
-The platform is built on a simple truth:
+Most discovery platforms are built around filters and curated listings. Tmpest is built around a different idea: people in urgent situations don't want to browse. They want to be understood.
 
-Sometimes people don't need options. They need relief, safety, or a place to pause — and they need to be understood in one sentence, not five filters.
+The core of Tmpest is **Survi**, a conversational AI companion that replaces the traditional search box entirely. Instead of typing keywords into filters, a user describes their situation in plain language. Survi figures out the rest.
+
+> *"I'm stuck in Jadavpur, I need somewhere to sleep and eat."*
+
+Survi extracts the intent, confirms it, and surfaces shelter and food listings near Jadavpur — together, without separate searches.
 
 ---
 
 ## The Problem
 
-Tmpest addresses three real gaps in how people access basic resources in unfamiliar or urgent situations:
-
 **Immediate Access Gap**
-In unfamiliar or crowded places, people struggle to quickly locate washrooms, safe public facilities, and basic comfort points during urgent moments.
+In unfamiliar or urgent situations, people struggle to find washrooms, safe facilities, and basic comfort points quickly.
 
 **Affordable Shelter Gap**
-Central accommodation is expensive and hard to find on short notice, while spare rooms and unused space within communities remain invisible to the people who need them.
+Short-notice accommodation is expensive and hard to find centrally, while spare rooms in communities remain invisible to people who need them.
 
 **Immediate Food Access Gap**
-People in urgent situations struggle to find affordable meals, open-now food options, and small local or home-based food providers nearby.
+People in urgent situations struggle to find affordable meals, open-now options, and small local food providers nearby.
 
 ---
 
-## How AI Fits In
+## How Survi Works
 
-Tmpest is intentionally not built as a recommendation engine that ranks and curates dozens of options. That model fits booking platforms and marketplaces — it does not fit a survival assistance tool, where the priority is speed and clarity over choice.
+Survi is Tmpest's conversational AI layer. She replaces the search box on the homepage with a full chat interface — activated the moment a user types and hits enter.
 
-Instead, the AI layer in Tmpest exists for one purpose: understanding a messy, natural language description of a situation and routing the user directly to the right place, with relevant context already carried over.
+### Conversation Flow
 
-**Example:**
+```
+User types anything → page transforms into chat
+         ↓
+Survi reads the message
+         ↓
+Intent extraction runs (category + location + budget)
+         ↓
+If location missing → Survi asks
+If need unclear    → Survi asks
+         ↓
+Survi confirms: "Got it — you need shelter near Jadavpur. Correct?"
+         ↓
+User confirms → Survi says "Finding results now."
+         ↓
+Contextual intro message + mixed listings render below chat
+         ↓
+Follow-up input stays live
+```
 
-> "Need a cheap place to stay near Park Street tonight"
+### What Makes It Different
 
-Rather than asking the user to manually select a category, set filters, and search, Tmpest's intent layer extracts what matters from that single sentence and takes the user straight to the Shelters page — with the location already understood and carried into the next screen.
+Traditional flow:
+```
+User → Category filter → Location filter → Search → Results
+```
 
-### Intent Extraction Pipeline
+Tmpest flow:
+```
+User describes situation → Survi understands → Results
+```
 
-The natural language search box on the landing page is powered by two Hugging Face models, chosen specifically to avoid the cost and complexity of training or running a custom model:
+No filters. No navigation. No translating your problem into a system's language.
+
+---
+
+## AI Architecture
+
+### Survi — Conversational Layer (`Utils/tmpest_chat.py`)
+
+- **Model:** Llama 3.1 8B Instruct via Hugging Face Inference API
+- **State machine:** `initial → awaiting_confirm → confirmed`
+- **Fallback handling:** travel/emergency keywords trigger helpline responses (Kolkata Police: 100, WB Tourism: 1800-345-5555, Kolkata Metro: 033-2229-0000)
+- **Stateless by design:** no conversation stored — privacy-first for users in distress
+
+### Intent Extraction Layer (`Utils/ai.py`)
+
+Two Hugging Face models, no training required:
 
 **Category Detection — `facebook/bart-large-mnli`**
-A zero-shot classification model determines whether the user's query relates to shelter, food, washrooms, or seller listings, without requiring any labeled training data specific to this use case.
+Zero-shot classification across shelter / food / washroom. Keyword matching runs first for speed; model handles ambiguous queries.
 
 **Location Extraction — `dslim/bert-base-NER`**
-A named entity recognition model identifies location references within the query, which are then carried forward to pre-fill the search context on the destination page.
+Named entity recognition pulls location references from natural language. Subword artifacts cleaned in post-processing.
 
 **Budget Extraction**
-A lightweight rule-based extractor identifies numeric budget constraints mentioned in the query.
+Lightweight regex extracts numeric budget constraints from the query.
 
-### Routing Flow
+### Mixed Results Layer (`Utils/tmpest_results.py`)
 
-```
-
-User types a natural language query
-|
-v
-Category detected (shelter / food / washroom / seller)
-|
-v
-Location and budget extracted, if present
-|
-v
-Low-confidence or unclear queries are caught
-and the user is asked to rephrase
-|
-v
-User is routed to the matching page
-|
-v
-Destination page reads the extracted context
-and pre-fills the search bar accordingly
-
-```
-
-Manual browsing remains fully intact alongside this flow. Each resource category also has its own dedicated page with a standalone search bar, so a user can choose to browse directly without going through the natural language box at all.
-
----
-
-## Core Features
-
-### Shelters
-
-A discovery system for affordable, short-term accommodation, built around listings shared directly by community members rather than commercial inventory.
-
-![Shelters Page](shelters-ui-placeholder.png)
-
----
-
-### Washrooms
-
-A fast, structured system that helps users locate washrooms during urgent moments, without requiring complex navigation or GPS-based logic in the MVP stage.
-
-![Washrooms Page](washrooms-ui-placeholder.png)
-
----
-
-### Food
-
-A discovery system for nearby food access, built around the same shared-listing model as Shelters — affordable meals, home-cooked options, and small local providers.
-
-![Food Page](food-ui-placeholder.png)
-
----
-
-### Seller Section
-
-A dedicated seller area where users can create and manage listings across Food, Shelter, and Washroom categories. This section will later be connected to authentication and Supabase-backed seller accounts, allowing one seller to manage multiple listings.
-
----
-
-## Share, Not Rent
-
-Tmpest is not a booking platform, a delivery service, or a marketplace. The language used throughout the product is intentionally built around sharing rather than transacting.
-
-People with a spare room or extra food capacity can share it with someone nearby who needs it, rather than listing it for rent in the conventional sense. This distinction matters: Tmpest is not trying to replicate the commercial logic of accommodation or food delivery platforms. It exists to connect real, immediate need with real, immediate availability — between people, not through a marketplace.
+After confirmation, Survi surfaces listings across multiple categories for the same location — shelter and food side by side, not on separate pages. Primary category shown first, secondary categories below. Budget filtering applied to primary category.
 
 ---
 
 ## System Architecture
 
 ```
-
 Tmpest/
-├── Tmpest.py                    Landing page with natural language search
+├── Tmpest.py                    Landing page — header + Survi trigger
 ├── pages/
-│   ├── 1_Shelters.py            Shelter listings and manual search
-│   ├── 2_Washrooms.py           Washroom discovery system
-│   ├── 3_Food.py                Food listings and manual search
-│   └── 4_Seller_Section.py      Seller dashboard (creation + management layer)
+│   ├── 1_Shelters.py            Shelter listings with manual search
+│   ├── 2_Washrooms.py           Washroom discovery
+│   ├── 3_Food.py                Food listings with manual search
+│   └── 4_Seller_Section.py      Seller dashboard — create and manage listings
 
 ├── Utils/
-│   ├── ai.py                    Intent extraction layer (Hugging Face models)
-│   ├── Searchbox.py             Shared styled search component
-│   ├── button.py                Shared styled button component
-│   ├── title.py                Shared title, header, and divider components
+│   ├── tmpest_chat.py           Survi — full conversational AI layer
+│   ├── tmpest_results.py        Mixed multi-category listing renderer
+│   ├── ai.py                    Intent extraction (bart-large-mnli + bert-base-NER)
+│   ├── listings.py              Listing fetch layer with fuzzy location matching
+│   ├── seller_profile.py        Seller profile + listing creation UI
+│   ├── auth.py                  Seller signup and login
+│   ├── storage.py               Supabase storage — listing images + identity docs
+│   ├── supabase_client.py       Shared Supabase client
+│   ├── Searchbox.py             Styled search component
+│   ├── button.py                Styled button component
+│   ├── title.py                 Title, header, and divider components
 │   └── section.py              Section layout helpers
 
-├── images/                      Static assets
+├── images/
 └── requirements.txt
-
 ```
+
+---
+
+## Page Flow
+
+### Landing Page — Survi Chat
+
+User opens Tmpest → types their situation → page transforms into Survi chat interface. Shelter, washroom, and food sections below are hidden during chat (`st.stop()`). User can return to browse mode via "← New Search".
+
+### Shelters / Washrooms / Food
+
+Manual browsing remains fully intact. Each page has its own styled search bar, location filtering, and listing grid — accessible directly without going through Survi.
+
+### Seller Section
+
+Sellers log in or sign up (with identity document upload) and access a dashboard to post listings across Shelter, Food, and Washroom categories. Each listing type has its own tab with relevant fields. Images upload to Supabase Storage.
+
+---
+
+## Seller Model
+
+Tmpest is not a marketplace. Sellers are community members sharing spare rooms, home-cooked meals, or washroom access — not commercial operators. The language throughout is intentionally built around sharing rather than transacting.
 
 ---
 
 ## Technology
 
-**Frontend**
-Streamlit, with custom CSS for styling and layout.
-
-**AI / NLP**
-Hugging Face Transformers — zero-shot classification for intent detection, named entity recognition for location extraction.
-
-**Backend**
-Supabase (PostgreSQL) for storing shared listings across Shelters, Food, Washrooms, and Seller-managed data.
-
-**Mapping**
-Folium, used for washroom visualization (optional / future enhancement for MVP simplicity).
+| Layer | Stack |
+|---|---|
+| Frontend | Streamlit + custom CSS |
+| Conversational AI | Llama 3.1 8B Instruct (Hugging Face Inference API) |
+| Intent Classification | facebook/bart-large-mnli |
+| Location Extraction | dslim/bert-base-NER |
+| Backend / Database | Supabase (PostgreSQL) |
+| Storage | Supabase Storage |
+| Auth | Supabase Auth |
+| Mapping | Folium (future) |
 
 ---
 
 ## Design Philosophy
 
-Tmpest is built around a single principle: people in urgent situations should not have to translate their problem into a system's language. The system should understand the problem as stated and respond accordingly.
+People in urgent situations should not have to translate their problem into a system's language. The system should understand the problem as stated and respond accordingly.
 
-This shapes every architectural decision in the project — the single search box instead of multi-step filters, the routing-based flow instead of a results dashboard, and the shared-listing model instead of a commercial marketplace structure.
+This is why Tmpest has no multi-step filters, no category landing pages required, and no results dashboard to browse before finding relief. Survi handles the translation. The user just talks.
 
 ---
 
 ## Current Stage
 
-Core natural language routing flow is implemented and functional. Backend integration for shared listings and seller system is in progress, including the Seller Section and future authentication layer.
+Core Survi conversational flow is implemented and functional. Seller listing system is live with Supabase backend. Manual browsing across all three categories is fully operational.
 
 ---
 
 ## License
 
-This project is open source and available under the MIT License.
+MIT License.
