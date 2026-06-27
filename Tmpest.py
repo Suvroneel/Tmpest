@@ -3,7 +3,7 @@ from Utils.button import styled_button
 from Utils.title import *
 from Utils.section import section_start, section_end
 from Utils.tmpest_chat import render_chat, render_search_trigger
-st.write(st.session_state)
+
 st.set_page_config(
     page_title="Tmpest",
     layout="wide",
