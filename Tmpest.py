@@ -2,8 +2,8 @@ import streamlit as st
 from Utils.button import styled_button
 from Utils.title import *
 from Utils.section import section_start, section_end
-from Utils.ai import extract_intent  # 🆕 AI utility
-
+from Utils.tmpest_chat import render_chat, render_search_trigger
+st.write(st.session_state)
 st.set_page_config(
     page_title="Tmpest",
     layout="wide",
@@ -17,98 +17,34 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ── Header (smaller than before) ──────────────────────────────────────────────
+# ── Header ─────────────────────────────────────────────────────────────────────
 col1, col2 = st.columns([1, 4])
 with col1:
-    st.image('images/logo.jpg', use_container_width=True, width=70)   # slightly smaller
+    st.image('images/logo.jpg', use_container_width=True, width=70)
 with col2:
     render_main_title()
     render_green_text("Find peace when you require it most")
 
     st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
 
-    dash = styled_button("Seller Dashboard",key="dash", icon=":material/dashboard:")
+    dash = styled_button("Seller Dashboard", key="dash", icon=":material/dashboard:")
     if dash:
         st.switch_page("pages/4_Seller_Section.py")
 
 st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
-
-# ── Smart Search Box ───────────────────────────────────────────────────────────
-st.markdown("""
-    <style>
-        div[data-baseweb="input"] {
-            background: #ffffff;
-            border: 2px solid #b8f24a;
-            border-radius: 999px;
-            padding-left: 20px;
-            padding-right: 20px;
-            min-height: 62px;
-            box-shadow: 0 2px 16px rgba(184,242,74,0.15);
-            transition: all 0.25s ease;
-        }
-        div[data-baseweb="input"]:focus-within {
-            box-shadow: 0 0 0 5px rgba(184,242,74,0.2), 0 8px 24px rgba(184,242,74,0.2);
-        }
-        div[data-baseweb="input"] input {
-            font-size: 18px;
-            font-weight: 400;
-            color: #2c2c2c;
-            background: transparent;
-        }
-        div[data-baseweb="input"] input::placeholder {
-            color: #9ca3af;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-render_welcome_message()
-st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
-
-left, mid, right = st.columns([1, 6, 1])
-with mid:
-    query = st.text_input(
-        "",
-        placeholder="Tell us what you need ",
-        label_visibility="collapsed",
-        key="main_search"
-    )
-
-# ── Handle Search ──────────────────────────────────────────────────────────────
-# Case 1: empty submit — nothing typed yet, do nothing
-if query is not None and query.strip() == "":
-    pass
-
-elif query:
-    with st.spinner("Finding the best option for you..."):
-        intent = extract_intent(query)
-
-    category = intent.get("category", "").lower()
-    score = intent.get("score", 0)  # confidence from zero-shot classifier, if returned
-
-    # Case 2: gibberish / low-confidence — don't route, just nudge the user
-    if category not in ["shelter", "washroom", "food"] or (score and score < 0.4):
-        st.warning("Hmm, couldn't quite figure out what you need. Try mentioning shelter, food, or washroom directly!")
-        st.session_state.pop("extracted_intent", None)
-        st.session_state.pop("search_query", None)
-
-    # Case 3: confident match — store and route
-    else:
-        st.session_state["search_query"] = query
-        st.session_state["extracted_intent"] = intent
-
-        if category == "shelter":
-            st.switch_page("pages/1_Shelters.py")
-        elif category == "washroom":
-            st.switch_page("pages/2_Washrooms.py")
-        elif category == "food":
-            st.switch_page("pages/3_Food.py")
+# ── Chat or Search ─────────────────────────────────────────────────────────────
+if st.session_state.get("chat_mode"):
+    render_chat()
+    st.stop()
+else:
+    render_search_trigger()
 
 st.markdown("<div style='margin-top: 80px;'></div>", unsafe_allow_html=True)
 section_divider()
 st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
-# ── Shelters Section (same as before) ─────────────────────────────────────────
+# ── Shelters ───────────────────────────────────────────────────────────────────
 A, B = st.columns([1, 5])
 with A:
     render_custom_header("Shelters")
@@ -127,16 +63,14 @@ with col1:
     new_tagline("•‎ ‎ ‎ ‎ ‎ ‎ ‎ User Reviews")
     st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
 
-    m , n = st.columns([1, 2])
+    m, n = st.columns([1, 2])
     with m:
-        journey = styled_button("Explore",key="shelter", icon=":material/open_in_new:")
+        journey = styled_button("Explore", key="shelter", icon=":material/open_in_new:")
     with n:
-        share_shelter =styled_button("Share",key="share_shelter", icon=":material/favorite:")
-
+        share_shelter = styled_button("Share", key="share_shelter", icon=":material/favorite:")
 
 if journey:
     st.switch_page("pages/1_Shelters.py")
-
 if share_shelter:
     st.switch_page("pages/4_Seller_Section.py")
 
@@ -149,7 +83,7 @@ st.markdown("""
 
 st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
 
-# ── Washrooms Section ──────────────────────────────────────────────────────────
+# ── Washrooms ──────────────────────────────────────────────────────────────────
 cola, colb = st.columns([5, 1])
 with colb:
     render_custom_header("Washrooms")
@@ -160,21 +94,22 @@ with colY:
     st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
     new_tagline("Locate clean, safe, and accessible washrooms near you — instantly, without the stress of searching.")
     st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
-    x,y, z = st.columns([3,3, 2])
+    x, y, z = st.columns([3, 3, 2])
     with y:
         move = styled_button("Explore", icon=":material/open_in_new:", key="toilet_button")
     with z:
-        share_toilet= styled_button("Share",key="share_toilet", icon=":material/favorite:")
-        if move:
-            st.switch_page("pages/2_Washrooms.py")
-    if share_toilet :
+        share_toilet = styled_button("Share", key="share_toilet", icon=":material/favorite:")
+    if move:
+        st.switch_page("pages/2_Washrooms.py")
+    if share_toilet:
         st.switch_page("pages/4_Seller_Section.py")
+
 with colX:
     st.image('images/toilet.jpg', use_container_width=True, width=30)
 
 st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
 
-# ── Food Section ───────────────────────────────────────────────────────────────
+# ── Food ───────────────────────────────────────────────────────────────────────
 A, B = st.columns([1, 5])
 with A:
     render_custom_header("Foods")
@@ -193,15 +128,14 @@ with col1:
     new_tagline("•‎ ‎ ‎ ‎ ‎ ‎ ‎ User Reviews")
     st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
 
-    m , n = st.columns([1, 2])
+    m, n = st.columns([1, 2])
     with m:
         food_btn = styled_button("Explore", key="food", icon=":material/open_in_new:")
     with n:
-        share_food =styled_button("Share",key="share_food", icon=":material/favorite:")
+        share_food = styled_button("Share", key="share_food", icon=":material/favorite:")
 
 if food_btn:
     st.switch_page("pages/3_Food.py")
-
 if share_food:
     st.switch_page("pages/4_Seller_Section.py")
 
@@ -211,9 +145,7 @@ with col2:
 st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
 section_divider()
 
-################# END ################
-
-C,D,E = st.columns([1, 3, 1])
+C, D, E = st.columns([1, 3, 1])
 with C:
     st.image('images/img_1.jpg', width=200)
 with D:
