@@ -29,7 +29,7 @@ def render_tagline():
 
     st.markdown("""
         <h3 style='font-family:"Poppins"; font-size: 28px;color:#84B63A; font-weight: 400; margin-top:-15px;'>
-            Find peace when you require it most
+           Minimum Friction, Maximum Action
         </h3>
     """, unsafe_allow_html=True)
 
