@@ -33,7 +33,7 @@ with col2:
     if dash:
         st.switch_page("pages/4_Seller_Section.py")
 
-st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
 
 # ── Chat or Search ─────────────────────────────────────────────────────────────
 if st.session_state.get("chat_mode"):
