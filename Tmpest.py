@@ -24,6 +24,8 @@ with col1:
 with col2:
     render_main_title()
     render_green_text("Minimum Friction, Maximum Action")
+    
+    new_tagline("Crisis mode brain can't handle friction. Survi asks minimum, acts maximum.")
 
     st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
 
