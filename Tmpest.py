@@ -23,7 +23,7 @@ with col1:
     st.image('images/logo.jpg', use_container_width=True, width=70)
 with col2:
     render_main_title()
-    render_green_text("Find peace when you require it most")
+    render_green_text("Minimum Friction, Maximum Action")
 
     st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
 
