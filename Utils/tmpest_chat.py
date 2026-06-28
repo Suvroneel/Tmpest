@@ -170,7 +170,7 @@ def render_search_trigger():
     </style>
     """, unsafe_allow_html=True)
 
-    from Utils.title import *
+    from Utils.title import render_welcome_message, new_tagline_center
     new_tagline_center("Crisis mode brain can't handle friction. Survi asks minimum, acts maximum.")
     st.markdown("<div style='margin-top:30px;'></div>", unsafe_allow_html=True)
 
