@@ -27,7 +27,7 @@ with col2:
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
     new_tagline("Crisis mode brain can't handle friction. Survi asks minimum, acts maximum.")
 
-    st.markdown("<div style='margin-top: 55px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
 
     dash = styled_button("Seller Dashboard", key="dash", icon=":material/dashboard:")
     if dash:
