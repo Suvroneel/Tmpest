@@ -1,8 +1,8 @@
 # Tmpest
 
-### Find peace when you need it most.
+### Minimum Friction, Maximum Action.
 
-A real-time survival assistance platform powered by **Survi** — a conversational AI that understands what you need, where you are, and surfaces the right resources without asking you to search.
+Crisis mode brain can't handle friction. Survi asks minimum, acts maximum. One or two questions max, then gets you there.
 
 ---
 
